@@ -10,18 +10,14 @@ const AddPostForm = () => {
 
     const onTitleChanged = (e) => setTitle(e.target.value);
     const onContentChanged = (e) => setContent(e.target.value);
-    // console.log("Title is", title)
-    // console.log("Content is", content)
 
     const onSavePostClicked = () => {
 
         if(title && content){
-
             dispatch(postAdded(title, content))
             setTitle('')
             setContent('')
             console.log("Data Saved..")
-            
         } else{
             console.log("Error Saving data")
         }
