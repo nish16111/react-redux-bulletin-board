@@ -1,28 +1,29 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
+import { selectAllPosts } from './postsSlice';
 
 const PostsList = () => {
 
-    const posts = useSelector((state) => state.posts);
+    const posts = useSelector(selectAllPosts);
 
     const renderedPosts = posts.map((posts) => {
         return(
-            <div key={posts.id}>
+            <article key={posts.id}>
 
                 <div style={{display: 'flex'}}>
-                <span>({posts.id})</span>
                 <h3>{posts.title}</h3>
                 </div>
 
                 <p>{posts.content.substring(0, 100)}</p>
-            </div>
+            </article>
         )
     })
 
     return(
-        <div>
+        <section>
+            <h2>Posts</h2>
             {renderedPosts}
-        </div>
+        </section>
     )
 }
 
