@@ -16,14 +16,12 @@ const AddPostForm = () => {
     const onSavePostClicked = () => {
 
         if(title && content){
-            dispatch(postAdded({
-                id: nanoid(),
-                title: title,
-                content: content
-            }))
+
+            dispatch(postAdded(title, content))
             setTitle('')
             setContent('')
             console.log("Data Saved..")
+            
         } else{
             console.log("Error Saving data")
         }

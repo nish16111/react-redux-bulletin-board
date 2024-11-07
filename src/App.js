@@ -4,8 +4,8 @@ import PostsList from "./features/posts/PostsList";
 function App() {
   return (
     <main>
-      <PostsList />
       <AddPostForm />
+      <PostsList />
     </main>
   );
 }
