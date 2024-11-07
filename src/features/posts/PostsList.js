@@ -11,7 +11,7 @@ const PostsList = () => {
             <article key={posts.id}>
 
                 <div style={{display: 'flex'}}>
-                <h3>{posts.title}</h3>
+                    <h3>{posts.title}</h3>
                 </div>
 
                 <p>{posts.content.substring(0, 100)}</p>
