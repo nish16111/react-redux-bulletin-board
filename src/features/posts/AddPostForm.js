@@ -16,8 +16,8 @@ const AddPostForm = () => {
     const onContentChanged = (e) => setContent(e.target.value);
     const onAuthorChanged = (e) => setUserId(e.target.value);
 
-    console.log("UserId is: ", userId)
-
+    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+ 
     const onSavePostClicked = () => {
 
         if(title && content){
@@ -70,6 +70,7 @@ const AddPostForm = () => {
                 <button 
                     onClick={onSavePostClicked} 
                     type="button"
+                    disabled={!canSave}
                 >Save Post</button>
             </form>
         </section>
