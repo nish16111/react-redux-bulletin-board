@@ -1,43 +1,53 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
-import { selectAllPosts } from './postsSlice';
-import PostAuthor from './PostAuthor';
-import TimeAgo from './TimeAgo';
-import ReactionButtons from './ReactionButtons';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { selectAllPosts, getPostsError, getPostsStatus, fetchPosts } from './postsSlice';
+import PostsExcerpt from './PostsExcerpt';
 
 const PostsList = () => {
+    const dispatch = useDispatch();
 
     const posts = useSelector(selectAllPosts);
+    const postsStatus = useSelector(getPostsStatus)
+    const error = useSelector(getPostsError)
 
-    const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
+    useEffect(() => {
+        console.log("postsStatus", postsStatus)
+        if(postsStatus === 'idle') {
+            console.log("In if condition")
+            dispatch(fetchPosts());
+        }
+    }, [postsStatus, dispatch])
 
-    const renderedPosts = orderedPosts.map((post) => {
-        return(
-            <article key={post.id}>
+    let content;
 
-                <div style={{display: 'flex'}}>
-                    <h3>{post.title}</h3>
-                </div>
-
-                <p>{post.content.substring(0, 100)}</p>
-                <p className='postCredit'>
-                    <PostAuthor userId={post.userId}/>
-                    <TimeAgo timestamp={post.date}/>
-                </p>
-                <ReactionButtons post={post}/>
-            </article>
-        )
-    })
+    if(postsStatus === 'loading') {
+        content = <p>"Loading..."</p>;
+    } else if(postsStatus === 'succeeded') {
+        const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
+        console.log(orderedPosts)
+        content = orderedPosts.map((post) => {
+            return(
+                <PostsExcerpt key={post.id} post={post}/> 
+            )
+        })
+    } else if(postsStatus === 'failed') {
+        content = <p>{error}</p>
+    }
 
     return(
         <section>
             <h2>Posts:</h2>
-            {renderedPosts}
+            {content}
         </section>
     )
 }
 
 export default PostsList;
 
-
-
+/* When passing the prop from parent to 
+child component the prop's key shld be
+same. for example in post = {post}
+the first post is the key and {post} is
+the value (Key shld be same!!!)                      
+*/
