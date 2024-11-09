@@ -110,6 +110,11 @@ export const selectAllPosts = (state) => state.posts.posts; /* state.posts.posts
                                                                 defined in the store and the posts in the end is used to 
                                                                 access the posts prop in the initial state object
                                                             */
+
+export const selectPostById = (state, postId) => {
+    state.posts.posts.find(post => post.id === postId)
+}
+
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
 
