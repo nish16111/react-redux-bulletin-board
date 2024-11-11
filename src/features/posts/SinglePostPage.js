@@ -10,10 +10,24 @@ const SinglePostPage = () => {
 
     const post = useSelector((state) => selectPostById(state, postId))
 
+    if(!post) {
+      return(
+        <section>
+          Post not found!
+        </section>
+      )
+    }
+
   return (
-    <div>
-      
-    </div>
+    <article>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+      <p className='postCredit'>
+        <PostAuthor userId={post.userId}/>
+        <TimeAgo timestamp={post.date}/>
+      </p>
+      <ReactionButtons post={post}/>
+    </article>
   )
 }
 
