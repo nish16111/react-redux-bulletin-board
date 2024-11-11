@@ -5,12 +5,15 @@ import { useSelector } from "react-redux";
 import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
 import TimeAgo from './TimeAgo';
+import { useParams } from 'react-router-dom';
 
 const SinglePostPage = () => {
 
-    const post = useSelector((state) => selectPostById(state, postId))
+    const { postId } = useParams()
+    const post = useSelector((state) => selectPostById(state, Number(postId)))
 
     if(!post) {
+      console.log("Id is: ", postId)
       return(
         <section>
           Post not found!
