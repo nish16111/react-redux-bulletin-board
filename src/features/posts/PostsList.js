@@ -5,19 +5,13 @@ import { selectAllPosts, getPostsError, getPostsStatus, fetchPosts } from './pos
 import PostsExcerpt from './PostsExcerpt';
 
 const PostsList = () => {
-    const dispatch = useDispatch();
+    
 
     const posts = useSelector(selectAllPosts);
     const postsStatus = useSelector(getPostsStatus)
     const error = useSelector(getPostsError)
 
-    useEffect(() => {
-        console.log("postsStatus", postsStatus)
-        if(postsStatus === 'idle') {
-            console.log("In if condition")
-            dispatch(fetchPosts());
-        }
-    }, [postsStatus, dispatch])
+    
 
     let content;
 
