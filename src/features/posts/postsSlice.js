@@ -14,6 +14,19 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPos
     return response.data;
 })
 
+export const updatePost = createAsyncThunk('posts/updatePost', async (initialPost) => {
+    const { id } = initialPost
+    const response = await axios.put(`${POSTS_URL}/${id}`, initialPost)
+    return response.data
+})
+
+export const deletePost = createAsyncThunk('posts/deletePost', async (initialPost) => {
+    const { id } = initialPost
+    const response = await axios.delete(`${POSTS_URL}/${id}`)
+    if(response?.status === 200) return initialPost
+    return `${response.status}: ${response.statusText}`
+})
+
 const initialState = {
     posts: [],
     status: 'idle',
@@ -102,6 +115,32 @@ const postsSlice = createSlice({
                 }
                 console.log("Payload before modifications: ", action.payload)
                 state.posts.push(action.payload)
+            })
+
+            .addCase(updatePost.fulfilled, (state, action) => {
+                if(!action.payload?.id) {
+                    console.log("Post could not be updated")
+                    console.log(action.payload)
+                    return;
+                }
+
+                const { postId } = action.payload;
+                action.payload.date = new Date().toISOString();
+
+                const posts = state.posts.filter(post => post.id !== postId) // post.id -> id inside the initial state the curr id
+                                                                             // postId -> the id I get from the useParam
+                state.posts = [...posts, action.payload]
+            })
+
+            .addCase(deletePost.fulfilled, (state, action) => {
+                if(!action.payload?.id) {
+                    console.log("Post could not be deleted")
+                    console.log(action.payload)
+                }
+
+                const { postId } = action.payload
+                const posts = state.posts.filter(post => post.id !== postId)
+                state.posts = posts
             })
     }
 })
